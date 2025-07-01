@@ -1,0 +1,40 @@
+name: Build and Trigger ADO
+
+on:
+  push:
+    branches: [ "master" ]  # or your working branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest
+
+    - name: Run tests (if any)
+      run: |
+        if [ -d "tests" ]; then
+          pytest tests/
+        else
+          echo "No tests directory found, skipping"
+        fi
+
+
+    - name: Trigger ADO Pipeline
+      run: |
+        curl -u :${{ secrets.ADO_PAT }} \
+        -X POST "https://dev.azure.com/cloud-diaries/Github%20Actions%20ADO%20Integration/_apis/pipelines/6/runs?api-version=7.0-preview.1" \
+        -H "Content-Type: application/json" \
+        -d '{}'
