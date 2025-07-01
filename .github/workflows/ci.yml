@@ -35,6 +35,6 @@ jobs:
     - name: Trigger ADO Pipeline
       run: |
         curl -u :${{ secrets.ADO_PAT }} \
-        -X POST "https://dev.azure.com/cloud-diaries/Github%20Actions%20ADO%20Integration/_apis/pipelines/6/runs?api-version=7.0-preview.1" \
+        -X POST "https://dev.azure.com/cloud-diaries/Github%20Actions%20ADO%20Integration/_apis/pipelines/9/runs?api-version=7.0-preview.1" \
         -H "Content-Type: application/json" \
         -d '{}'
